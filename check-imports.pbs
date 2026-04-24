@@ -11,7 +11,7 @@ module load cuda/12.4
 
 
 # Activate your virtual environment
-source activate test-project1-env 
+source activate test-project-env 
 
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 
