@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#PBS -N testing
+#PBS -l select=1:ncpus=20:ngpus=1
+#PBS -q gpu_1d
+
+# Load required modules, here it is the anaconda module and the cude module
+module load /app/common/modules/anaconda3-2024.10 
+# For the exact name of the modules, check first in the 
+module load cuda/12.4
+
+
+# Activate your virtual environment
+source activate test-project1-env 
+
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
+# change to working directory
+cd $PBS_O_WORKDIR
+# run your python script
+python check-imports.py

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#PBS -N testing
+#PBS -l select=1:ncpus=20:ngpus=1
+#PBS -q gpu_1d
+
+# Load required modules, here it is the anaconda module and the cude module
+module load /app/common/modules/anaconda3-2024.10 
+
+# For the exact name of the cuda toolkit and available versions, check with the administration
+module load cuda/12.4
+
+# Activate your virtual environment
+source activate test-project1-env 
+
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
+# change to working directory
+cd $PBS_O_WORKDIR
+# run your python script
+
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+jupyter nbconvert \
+    --to notebook \
+    --execute main2.ipynb \
+    --output outputs/executed_from_main2_${TIMESTAMP}.ipynb \
+    --ExecutePreprocessor.timeout=7200 \
+    2>&1 | tee logs/run_${TIMESTAMP}.log
+
+echo "Exit code :$?"
